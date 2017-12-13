@@ -1,0 +1,177 @@
+<html>
+
+<head>
+	<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="json-viewer/json-viewer.css">
+	<link rel="stylesheet" href="code-beautifier/code-beautifier.css">
+	        
+	<script src="json-viewer/json-viewer.js"></script>
+	<script src="tag-parser/tagParser.js"></script>
+	<script src="code-beautifier/code-beautifier.js"></script>
+    <script src="contentEditable/contentEditable.js"></script>
+
+	<script src="json-to-string/json-to-string.js"></script>
+	<script src="json-to-string/parser-plugins.js"></script>
+
+    <link rel="stylesheet" href="index.css">	
+<head>
+	<style>
+		table tr td {
+			border: 1px solid silver;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+	<script>	
+		var data = {};
+	</script>
+</head>
+
+<body class="background-set">
+
+    <div id='wraper'>
+    	<div class="label">
+    		<div class="label-code background-set">TEMPLATE CODE</div>
+    		<div class="label-three background-set">PARSED TREE</div>
+    	</div>
+        <div contenteditable=true id='textArea' class="code-beautifier"></div>
+        <div class="json-container"></div>
+
+
+    	<div class="label-parsed-text background-set">
+    		PARSED TEMPLATE CODE
+    	</div>
+        <div id="parsed-text" class="parsed-text"></div>
+
+    	<div class="label-parsed-text background-set">
+    		HTML RESULT
+    	</div>        
+        <div id="result-html" class="parsed-text"></div>
+
+    	<div class="label-parsed-text background-set">
+    		CONSOLE
+    	</div>        
+        <div id="result-console" class="parsed-text"></div>        
+    </div>
+
+	<script>
+
+		window.onerror = function (msg, url, lineNo, columnNo, error) {
+			var string = msg.toLowerCase();
+			var substring = "script error";
+			if (string.indexOf(substring) > -1){
+				$('#result-console').html('<span class="red">Script Error: See Browser Console for Detail</span>');
+			} else {
+				var message = [
+					'Message: ' + msg,
+					'URL: ' + url,
+					'Line: ' + lineNo,
+					'Column: ' + columnNo,
+					'Error object: ' + JSON.stringify(error)
+				].join(' - ');
+				message = `<span class="red">${message}</span>`;
+				$('#result-console').html(message);
+			}
+
+			return false;
+		};	
+
+        var _contentEditable = new contentEditable();
+        _contentEditable.init($('#textArea'), function() {
+            codeBeautifier.beautify($('#textArea'));
+        });   
+
+
+        var _contentEditable2 = new contentEditable();
+        _contentEditable2.init($('#parsed-text'), function() {
+            codeBeautifier.beautify($('#parsed-text'));        	
+        });         		
+
+
+$('#textArea')[0].textContent = `
+{{js}}
+// this is standart JavaScript tag, so to acccess 'data' object,
+// we just use it's name
+data.users = [
+    {name:"John", age: 32, role: [1,1,1]},
+    {name:"Jim", age: 26,role: [1,0,0]},
+    {name:"Sam", age: 26,role: [0,1,1]},
+];
+
+data.count = 0;
+{{/js}}
+
+<table>
+<!-- To access variable member of 'data' object inside the template, refer only to variable name and ommit 'data'  -->
+{{foreach $$users as user}}
+    <tr>
+        <td>{{$$user.name}}</td> 
+        {{js}}data.count = 0;{{/js}}
+        {{foreach ["editor","moderator","admin"] as role}}
+            {{if $$user.role[$$count] == 1}}
+                <td> <b>{{$$role}}</b> </td> 
+            {{else}}
+                <td> {{$$role}} </td>
+            {{/if}}
+            {{js}}data.count ++;{{/js}}
+        {{/foreach}}
+    </tr>
+{{/foreach}}
+</table>
+
+<hr>
+{{printObject}}
+<hr>
+{{printObject}}
+<hr>User data: {{printObjectMember user}}
+`
+		var parsedJSON = {};
+
+		function showTree() {
+			let txt = $('#textArea')[0].textContent;
+
+			/* config object */
+			var _cfg={
+				openTag : "{{",
+				closeTag : "}}"
+			}			
+			let tagParser = new TagParser(_cfg);			
+			parsedJSON = tagParser.parseDocument(txt);
+           JsonView.showJSON(parsedJSON, $('.json-container') );			
+		}
+
+		function parseBack() {
+			$('#result-console').html('<div class="green">Code parsed successfuly.</div>');
+			// parse JSON object back to text
+			/* config object */
+			var _cfg={
+				parserPlugIns: parserPlugIns
+			}
+			var parsedText = jsonToString.toString(parsedJSON, data, _cfg);
+			// shows html result
+			$('#result-html').html(parsedText);
+			// show parsed text 
+			parsedText = parsedText.split("<").join("&lt;");
+			parsedText = parsedText.split(">").join("&gt;");
+			$('#parsed-text').html(parsedText);     
+		}
+
+
+        $('#textArea').keyup(function() {
+        	showTree();
+			parseBack();
+        });
+
+
+        codeBeautifier.init($('#textArea'));
+        codeBeautifier.beautify();   
+
+        showTree();
+		parseBack();				
+	</script>
+</body>
+</html>

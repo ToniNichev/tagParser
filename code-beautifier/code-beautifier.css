@@ -1,0 +1,25 @@
+ .code-beautifier {
+	white-space: pre-wrap;
+	font-size: 13px;
+}
+
+.code-beautifier .node-wrapper {
+	padding-left: 15px;
+}
+
+.code-beautifier .function {
+	color: green;
+	font-weight: bold;
+}
+
+.code-beautifier .function-param {
+	color: blue;
+}
+
+.code-beautifier .quoted-text {
+	color: #fda201;
+}
+
+.code-beautifier .error {
+	color: red;
+}

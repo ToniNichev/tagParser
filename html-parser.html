@@ -1,0 +1,124 @@
+<html>
+
+<head>
+	<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+	
+	<link rel="stylesheet" href="json-viewer/json-viewer.css">
+	<link rel="stylesheet" href="code-beautifier/code-beautifier.css">
+	        
+	<script src="json-viewer/json-viewer.js"></script>
+	<script src="tag-parser/tagParser.js"></script>
+	<script src="code-beautifier/code-beautifier.js"></script>
+    <script src="contentEditable/contentEditable.js"></script>
+
+
+    <link rel="stylesheet" href="index.css">	
+<head>
+	<style>
+		table tr td {
+			border: 1px solid silver;
+		}
+
+		.json-container {
+			height: 95%;
+		}
+
+		#textArea {
+			height: 95%;			
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+	<script>	
+		var data = {};
+	</script>
+</head>
+
+<body class="background-set">
+
+    <div id='wraper'>
+    	<div class="label">
+    		<div class="label-code background-set">TEMPLATE CODE</div>
+    		<div class="label-three background-set">PARSED TREE</div>
+    	</div>
+        <div contenteditable=true id='textArea' class="code-beautifier"></div>
+        <div class="json-container"></div>
+
+    </div>
+
+	<script>
+
+		window.onerror = function (msg, url, lineNo, columnNo, error) {
+			var string = msg.toLowerCase();
+			var substring = "script error";
+			if (string.indexOf(substring) > -1){
+				$('#result-console').html('<span class="red">Script Error: See Browser Console for Detail</span>');
+			} else {
+				var message = [
+					'Message: ' + msg,
+					'URL: ' + url,
+					'Line: ' + lineNo,
+					'Column: ' + columnNo,
+					'Error object: ' + JSON.stringify(error)
+				].join(' - ');
+				message = `<span class="red">${message}</span>`;
+				$('#result-console').html(message);
+			}
+
+			return false;
+		};	
+
+        var _contentEditable = new contentEditable();
+        _contentEditable.init($('#textArea'), function() {
+            codeBeautifier.beautify($('#textArea'));
+        });   
+
+
+        var _contentEditable2 = new contentEditable();
+        _contentEditable2.init($('#parsed-text'), function() {
+            codeBeautifier.beautify($('#parsed-text'));        	
+        });         		
+
+
+$('#textArea')[0].textContent = `
+<div contents="siteContents">
+    <hr>
+    <H1>MY TITLE </H1>
+    <hr>
+    <br>
+    <div id="contentsBody">
+        <p>This is first <b>paragraph</b></p>
+    </div>
+</div>
+`
+		var parsedJSON = {};
+
+		function showTree() {
+			let txt = $('#textArea')[0].textContent;
+
+			/* config object */
+			var _cfg={
+				openTag : "<",
+				closeTag : ">"
+			}			
+			let tagParser = new TagParser(_cfg);			
+			parsedJSON = tagParser.parseDocument(txt);
+           JsonView.showJSON(parsedJSON, $('.json-container') );			
+		}
+
+
+        $('#textArea').keyup(function() {
+        	showTree();
+        });
+
+
+        codeBeautifier.init($('#textArea'));
+        codeBeautifier.beautify();   
+
+        showTree();			
+	</script>
+</body>
+</html>

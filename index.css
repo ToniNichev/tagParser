@@ -1,0 +1,124 @@
+body {
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+	padding: 0px;
+	margin-left: 25px;
+}
+
+.background-set {
+	background: #91a4b9de;
+}
+
+#textArea {
+    height: 40%;
+    width: 49%;
+    float: left;
+    border: 1px solid silver;
+    border-right: none;
+    border-bottom: none;
+    background: white;
+    padding-top: 20px;
+    overflow: auto;
+}
+
+.json-container {
+    height: 40%;
+    width: 49%;
+    display: inline-block;
+    top: 0px;
+    overflow:auto;
+    border-bottom: none;
+    background: #f5f5f5;
+    padding-top: 20px;
+}
+
+.parsed-text {
+    width: 98.08%;
+    border: 1px solid silver;
+    /* border-right:none; */
+    height: 20%;
+    overflow: auto;
+    background: #f5f5f5;
+    padding-top: 20px;
+}
+
+.label {
+	font-weight: bold;
+	padding-left: 20px;
+	margin: 0;
+}
+
+.label-code {
+	float: left;
+	/* width: 49.5%; */
+	position: relative;
+	top: 12px;
+	margin-right: 38%;
+	padding: 0px 10px;
+	border-radius: 25px;
+	/* margin: 0px; */
+	color: wheat;
+	background: white;
+}
+
+.label-three {
+	float: left;
+	position: relative;
+	top: 12px;
+	padding:0px 10px;
+	border-radius: 25px;
+	color: black;
+	background: #f5f5f5;
+}
+
+.label-parsed-text {
+	float: left;
+	position: relative;
+	top: 12px;
+	/* background: #868d94; */
+	margin-right: 45%;
+	padding: 0px 10px;
+	border-radius: 25px;
+	margin-right: 45%;
+	left: 20px;
+	color: black;
+	background: #f5f5f5;
+}
+
+#result-console {
+	height:50px;
+}
+
+.green {
+	color: green;
+}
+
+.red {
+	color: red;
+}
+
+.Absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  bottom: 0; 
+  right: 0;
+  
+  width:auto;
+  height:40px;
+  text-align: center;
+}
+
+.Absolute-Center a {
+	  text-decoration: none;
+	  border: 1px solid silver;
+	  border-radius: 25px;
+	  padding:10px;
+	  background:#ebedef;
+	  cursor: pointer;
+	  transition: background-color 0.5s ease;
+}
+
+.Absolute-Center a:hover {
+	background: #b0b0cc;
+}

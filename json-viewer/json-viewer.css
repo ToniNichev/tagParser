@@ -1,0 +1,99 @@
+.json-container {
+	border: 1px solid silver;
+	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+	font-size: 12px;
+	color: #0a0a0a;
+}
+
+#JSONviewer_EscapeHTMLContainer {
+	display: none;
+}
+
+.json-container div {
+	padding: 1px 1px 1px 10px;
+	overflow: hidden;
+	transition: max-height 0.85s cubic-bezier(0.42, 0, 0.01, 1.08);
+	max-height: auto;
+}
+
+
+.json-container h2, .json-container h3, .json-container h4 {
+	font-size: 12px;
+	font-weight:normal;
+	margin: 0;
+	padding: 0;
+}
+
+.triangle-left {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 6px 0 6px;
+	border-color: #2b79cc transparent transparent transparent;
+    transform: rotate(90deg);
+	transition: 0.35s;
+}
+
+.triangle-down {
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 6px 0 6px;
+	border-color: #2b79cc transparent transparent transparent;
+    transform: rotate(0deg);
+	transition: 0.35s;
+}
+
+.json-container h1 {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	cursor: pointer;
+	position:relative;
+	top: 1px;
+	left: -5px;
+	padding: 0;
+	margin: 0;
+}
+
+
+.json-container .systemText {
+	color: blue;
+}
+/* 
+	######################
+	Node container 
+	######################	
+*/
+
+/* head */
+.json-container .node-container > h2 {
+	display: none;
+	color: blue;
+}
+
+.json-container .node-container > .collapsedCloseTag {
+	display: inline-block;
+}
+
+/* node wrapper */
+
+.json-container .open-wrap-tag {
+	padding-left: 15px;
+	/* padding-top: 34px; */
+}
+
+.json-container .close-wrap-tag {
+	padding-left: 15px;
+	display: block;
+}
+
+/* 
+	######################
+	Key Value container
+	######################	
+*/
+
+.json-container span {
+	padding-left:21px;
+}
